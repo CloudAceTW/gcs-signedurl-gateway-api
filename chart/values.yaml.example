@@ -1,0 +1,22 @@
+gateway:
+  enabled: true
+  name: gcs-signurl-demo-gateway
+  labels: {}
+  gcpCertMapName: <GCP_CERT_MAP_NAME>
+  ipName: <GCP_IP_NAME>
+  allowedRoutes:
+    from: All
+    selectorLabels:
+      shared-gateway-access: "true"
+
+backend:
+  healthCheckPolicy:
+    enabled: true
+  svcName: <BACKEND_SVC_NAME>
+  targetPort: 8080
+
+frontend:
+  healthCheckPolicy:
+    enabled: true
+  svcName: <FRONTEND_SVC_NAME>
+  targetPort: 8080
