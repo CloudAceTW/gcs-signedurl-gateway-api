@@ -1,0 +1,26 @@
+{{- if .Values.backend.healthCheckPolicy.enabled }}
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: {{ include "chart.fullname" . }}-backend-hck
+  namespace: {{ .Release.Namespace }}
+spec:
+  default:
+    checkIntervalSec: 5
+    timeoutSec: 5
+    healthyThreshold: 2
+    unhealthyThreshold: 2
+    logConfig:
+      enabled: false
+    config:
+      type: HTTP
+      httpHealthCheck:
+        port: {{ .Values.backend.targetPort }}
+        requestPath: /api/v1/hck
+        proxyHeader: NONE
+  targetRef:
+    group: ""
+    kind: Service
+    name: {{ .Values.backend.svcName }}
+    namespace: {{ .Release.Namespace }}
+{{- end }}
